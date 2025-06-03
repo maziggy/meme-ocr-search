@@ -36,11 +36,12 @@ class MemeGUI:
         return f"""
         <div style="
             width: 100%;
-            background-color: #f8f8f8;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-primary);
         ">
             <div style="display: flex; justify-content: space-around; align-items: center;">
                 <div><strong>Database Statistics</strong></div>
@@ -152,7 +153,7 @@ class MemeGUI:
                 orig_img_data = base64.b64encode(f.read()).decode()
             
             html_grid += f"""
-            <div style="position: relative; background: #f8f8f8; border-radius: 8px; overflow: visible; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div style="position: relative; background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; overflow: visible; box-shadow: 0 2px 8px var(--shadow-medium); border: 1px solid var(--border-primary);">
                 <div style="overflow: hidden; border-radius: 8px;">
                     <img src="data:image/jpeg;base64,{img_data}" 
                          data-original="data:image/jpeg;base64,{orig_img_data}"
@@ -194,10 +195,11 @@ class MemeGUI:
                     position: absolute;
                     top: 42px;
                     left: 8px;
-                    background: #ffffff;
-                    border: 2px solid #e0e0e0;
+                    background: var(--bg-primary);
+                    color: var(--text-primary);
+                    border: 2px solid var(--border-primary);
                     border-radius: 8px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    box-shadow: 0 10px 30px var(--shadow-heavy);
                     padding: 8px;
                     display: none;
                     min-width: 160px;
@@ -212,10 +214,10 @@ class MemeGUI:
                         gap: 12px;
                         border-radius: 6px;
                         transition: background-color 0.2s;
-                        color: #333;
+                        color: var(--text-primary);
                         font-size: 14px;
                         font-weight: 500;
-                    " onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">
+                    " onmouseover="this.style.backgroundColor='var(--bg-secondary)'" onmouseout="this.style.backgroundColor='transparent'">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #2196F3;">
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -245,7 +247,7 @@ class MemeGUI:
                     </div>
                 </div>
                 
-                <div style="padding: 10px; font-size: 12px; line-height: 1.4;">
+                <div style="padding: 10px; font-size: 12px; line-height: 1.4; color: var(--text-secondary);">
                     {caption.replace(chr(10), '<br>')}
                 </div>
             </div>
@@ -669,9 +671,9 @@ class MemeGUI:
         import base64
         
         html_content = f"""
-        <div style="margin-top: 20px;">
-            <h3>Found {len(duplicate_groups)} groups of duplicates ({sum(len(group) for group in duplicate_groups)} total files)</h3>
-            <p style="color: #666; margin-bottom: 20px;">The first file in each group (with green border) is considered the original based on creation date.</p>
+        <div style="margin-top: 20px; color: var(--text-primary);">
+            <h3 style="color: var(--text-primary);">Found {len(duplicate_groups)} groups of duplicates ({sum(len(group) for group in duplicate_groups)} total files)</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">The first file in each group (with green border) is considered the original based on creation date.</p>
         """
         
         for group_idx, duplicates in enumerate(duplicate_groups):
@@ -679,8 +681,8 @@ class MemeGUI:
             deletable_paths = [dup['filepath'] for dup in duplicates[1:] if dup['exists']]
             
             html_content += f"""
-            <div style="margin: 20px 0; padding: 20px; background: #f8f8f8; border-radius: 10px; border: 1px solid #e0e0e0;">
-                <h4>Duplicate Group {group_idx + 1} - {len(duplicates)} files (Hash: {duplicates[0]['file_hash'][:8]}...)</h4>
+            <div style="margin: 20px 0; padding: 20px; background: var(--bg-secondary); color: var(--text-primary); border-radius: 10px; border: 1px solid var(--border-primary);">
+                <h4 style="color: var(--text-primary);">Duplicate Group {group_idx + 1} - {len(duplicates)} files (Hash: {duplicates[0]['file_hash'][:8]}...)</h4>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 15px;">
             """
             
@@ -693,20 +695,20 @@ class MemeGUI:
                             img_data = base64.b64encode(f.read()).decode()
                         img_html = f'<img src="data:image/jpeg;base64,{img_data}" style="width: 100%; height: auto; max-height: 200px; object-fit: contain; border-radius: 8px;">'
                     except:
-                        img_html = '<div style="background: #ddd; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">Image not available</div>'
+                        img_html = '<div style="background: var(--bg-tertiary); color: var(--text-secondary); height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">Image not available</div>'
                 else:
-                    img_html = '<div style="background: #ffcccc; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">File missing</div>'
+                    img_html = '<div style="background: var(--error-color); color: white; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">File missing</div>'
                 
                 # Determine if this is the original (first created)
                 is_original = idx == 0
                 
                 html_content += f"""
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); {'border: 2px solid #4CAF50;' if is_original else ''}" id="dup-{group_idx}-{idx}">
+                <div style="background: var(--bg-primary); color: var(--text-primary); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px var(--shadow-medium); border: 1px solid var(--border-primary); {'border: 2px solid #4CAF50;' if is_original else ''}" id="dup-{group_idx}-{idx}">
                     {img_html}
-                    <div style="margin-top: 10px; font-size: 12px;">
-                        <strong>{dup['filename']}</strong><br>
-                        <span style="color: #666;">Created: {dup['created_at']}</span><br>
-                        <span style="color: #666;">Confidence: {dup['confidence']:.2f}</span><br>
+                    <div style="margin-top: 10px; font-size: 12px; color: var(--text-primary);">
+                        <strong style="color: var(--text-primary);">{dup['filename']}</strong><br>
+                        <span style="color: var(--text-secondary);">Created: {dup['created_at']}</span><br>
+                        <span style="color: var(--text-secondary);">Confidence: {dup['confidence']:.2f}</span><br>
                         {'<span style="color: #4CAF50; font-weight: bold;">✓ Original (oldest)</span>' if is_original else '<span style="color: #f44336;">● Duplicate</span>'}
                         {'' if dup['exists'] else '<br><span style="color: #f44336;">⚠️ File missing</span>'}
                     </div>
@@ -716,15 +718,15 @@ class MemeGUI:
             if deletable_paths:
                 html_content += f"""
                     </div>
-                    <div style="margin-top: 15px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px;">
-                        <p style="margin: 0 0 10px 0; color: #856404;">
+                    <div style="margin-top: 15px; padding: 15px; background: var(--warning-color); color: white; border: 1px solid var(--warning-color); border-radius: 8px;">
+                        <p style="margin: 0 0 10px 0; color: white;">
                             <strong>⚠️ Action Required:</strong> {len(deletable_paths)} duplicate(s) can be deleted in this group.
                         </p>
-                        <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">
+                        <p style="margin: 0 0 10px 0; color: rgba(255,255,255,0.9); font-size: 14px;">
                             Click the button below to delete all duplicates and keep only the original (oldest) file.
                         </p>
                         <button class="delete-group-btn" data-group="{group_idx}" data-paths='{json.dumps(deletable_paths)}' 
-                                style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 500;">
+                                style="background: var(--error-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 500;">
                             🗑️ Delete {len(deletable_paths)} Duplicate(s)
                         </button>
                     </div>
@@ -732,7 +734,7 @@ class MemeGUI:
             else:
                 html_content += """
                     </div>
-                    <div style="margin-top: 15px; padding: 10px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px; color: #155724;">
+                    <div style="margin-top: 15px; padding: 10px; background: var(--success-color); border: 1px solid var(--success-color); border-radius: 5px; color: white;">
                         ✓ No deletable duplicates in this group
                     </div>
                 """
@@ -1000,8 +1002,63 @@ def create_interface():
     </script>
     """
     
-    # Custom CSS for modern, professional styling
+    # Custom CSS for modern, professional styling with dark theme support
     css = head_js + """
+    /* CSS Custom Properties for theme support */
+    :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --bg-tertiary: #e9ecef;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --text-muted: #999999;
+        --border-primary: #e0e0e0;
+        --border-secondary: #dee2e6;
+        --shadow-light: rgba(0,0,0,0.05);
+        --shadow-medium: rgba(0,0,0,0.1);
+        --shadow-heavy: rgba(0,0,0,0.15);
+        --accent-color: #667eea;
+        --success-color: #4CAF50;
+        --error-color: #f44336;
+        --warning-color: #ff9800;
+    }
+    
+    /* Dark theme support */
+    .dark, [data-theme="dark"], .dark-theme {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #404040;
+        --text-primary: #ffffff;
+        --text-secondary: #cccccc;
+        --text-muted: #999999;
+        --border-primary: #404040;
+        --border-secondary: #555555;
+        --shadow-light: rgba(0,0,0,0.2);
+        --shadow-medium: rgba(0,0,0,0.3);
+        --shadow-heavy: rgba(0,0,0,0.4);
+        --accent-color: #667eea;
+        --success-color: #4CAF50;
+        --error-color: #f44336;
+        --warning-color: #ff9800;
+    }
+    
+    /* Auto dark theme detection */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #404040;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --border-primary: #404040;
+            --border-secondary: #555555;
+            --shadow-light: rgba(0,0,0,0.2);
+            --shadow-medium: rgba(0,0,0,0.3);
+            --shadow-heavy: rgba(0,0,0,0.4);
+        }
+    }
+
     /* Container and layout - full width */
     .gradio-container, .gradio-app, .app, .main, .container {
         max-width: 100% !important;
@@ -1009,6 +1066,8 @@ def create_interface():
         margin: 0 !important;
         padding: 5px !important;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
     }
     
     /* Target Gradio's internal container classes */
@@ -1049,11 +1108,16 @@ def create_interface():
         column-fill: balance !important;
         padding: 15px;
         margin: 10px 0;
+        background-color: var(--bg-secondary) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-primary) !important;
+        border-radius: 8px !important;
     }
     
     .stats-box p {
         margin: 0 !important;
         break-inside: avoid !important;
+        color: var(--text-primary) !important;
     }
     
     /* Input containers - prevent wrapping */
@@ -1084,11 +1148,12 @@ def create_interface():
     
     /* Tab styling */
     .tab-nav {
-        background: white;
+        background: var(--bg-primary);
         border-radius: 12px;
         padding: 5px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px var(--shadow-light);
         margin-bottom: 20px;
+        border: 1px solid var(--border-primary);
     }
     
     /* Button styling */
@@ -1132,14 +1197,16 @@ def create_interface():
     /* Input styling */
     .gr-textbox input {
         border-radius: 10px;
-        border: 2px solid #e9ecef;
+        border: 2px solid var(--border-secondary);
         padding: 12px 16px;
         font-size: 14px;
         transition: all 0.3s ease;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
     }
     
     .gr-textbox input:focus {
-        border-color: #667eea;
+        border-color: var(--accent-color);
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
     
@@ -1147,11 +1214,13 @@ def create_interface():
     .gallery {
         overflow-y: auto;
         border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-        background: white;
+        box-shadow: 0 8px 25px var(--shadow-light);
+        background: var(--bg-primary);
+        color: var(--text-primary);
         padding: 15px;
         width: 100%;
         box-sizing: border-box;
+        border: 1px solid var(--border-primary);
     }
     
     /* Ensure HTML components don't overflow */
@@ -1205,20 +1274,24 @@ def create_interface():
     /* Accordion styling */
     .gr-accordion {
         border-radius: 12px;
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--border-secondary);
         margin-bottom: 15px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 10px var(--shadow-light);
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
     }
     
     /* Status text styling */
     .status-text {
-        background: #f8f9fa;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
         border-radius: 10px;
         padding: 20px;
-        border-left: 4px solid #667eea;
+        border-left: 4px solid var(--accent-color);
         font-family: 'Courier New', Courier, monospace;
         line-height: 1.6;
+        border: 1px solid var(--border-primary);
     }
     
     /* Refresh button centering */
@@ -1510,14 +1583,16 @@ def create_interface():
             gr.HTML("""
             <div style="
                 width: 100%;
-                background-color: #f0f0f0;
+                background-color: var(--bg-secondary);
+                color: var(--text-primary);
                 padding: 20px;
                 border-radius: 8px;
                 margin-bottom: 20px;
                 text-align: center;
+                border: 1px solid var(--border-primary);
             ">
-                <h1 style="margin: 0; font-size: 2rem;">🔍 Search Meme OCR Search System</h1>
-                <p style="margin: 8px 0 0 0; opacity: 0.7;">Extract text from memes and search through your collection with AI-powered OCR</p>
+                <h1 style="margin: 0; font-size: 2rem; color: var(--text-primary);">🔍 Search Meme OCR Search System</h1>
+                <p style="margin: 8px 0 0 0; opacity: 0.7; color: var(--text-secondary);">Extract text from memes and search through your collection with AI-powered OCR</p>
             </div>
             """)
         
@@ -1654,9 +1729,9 @@ def create_interface():
             # System Tab
             with gr.TabItem("⚙️ System", id="system"):
                 gr.HTML("""
-                <div style="padding: 20px;">
-                    <h3>System Settings</h3>
-                    <p>Current configuration and system information.</p>
+                <div style="padding: 20px; background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; border: 1px solid var(--border-primary);">
+                    <h3 style="color: var(--text-primary);">System Settings</h3>
+                    <p style="color: var(--text-secondary);">Current configuration and system information.</p>
                 </div>
                 """)
                 
